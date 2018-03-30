@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <title>Document</title>
+</head>
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+    }
+
+    .corpo-pag{
+        width: 900px;
+        margin: auto;
+    }
+
+    .accordion{
+        width: 700px;
+        margin: auto;
+    }
+
+    .titulo{
+        background-color: rgb(43, 43, 43);
+        color: white;
+        font-family: sans-serif;
+        cursor: pointer;
+        user-select: none;
+        height: 25px;
+        font-size: 20pt;
+        padding: 20px;
+    }
+
+    .content{
+        background-color: rgb(190, 190, 190);
+        font-family: sans-serif;
+        font-size: 15pt;
+        padding: 20px;
+    }
+
+    .formulario{
+        margin-top: 20px;
+        margin-left: 100px;
+    }
+</style>
+<body>
+    <div class="corpo-pag">
+        <div class="corpo-accord">
+            <!-- <div class="accordion">
+                <div class="titulo">
+                    titulo
+                </div>
+                <div class="content">
+                    bla bla bla bla bla
+                </div>
+            </div>
+            <div class="accordion">
+                <div class="titulo">
+                    titulo
+                </div>
+                <div class="content">
+                    bla bla bla bla bla
+                </div>
+            </div>
+            <div class="accordion">
+                <div class="titulo">
+                    titulo
+                </div>
+                <div class="content">
+                    bla bla bla bla bla
+                </div>
+            </div>
+            <div class="accordion">
+                <div class="titulo">
+                    titulo
+                </div>
+                <div class="content">
+                    bla bla bla bla bla
+                </div>
+            </div> -->
+        </div>
+        <form class="formulario">
+            Titulo: <input type="text" name="titulo" id="titulo-form"> <br>
+            Conteúdo: <input type="text" name="conteudo" id="conteudo"> <br>
+            <input type="submit" value="enviar" id="enviar">
+        </form>
+    </div>
+
+    <script>
+    let $corpoaccord = $('.corpo-accord');
+    let $accordion = $('.accordion');
+    let $titulo = $('.titulo');
+    let $content = $('.content');
+
+    
+    // $content.hide();
+
+    function clicarTitulo(){
+        $titulo.on('click', function(){
+            if($(this).hasClass('ativo')){
+                $(this).siblings($content).slideUp(500);
+                $(this).removeClass('ativo');
+            }
+            else{
+                $titulo.removeClass('ativo');
+                $content.slideUp(500);
+                $(this).siblings($content).slideDown(500);
+                $(this).addClass('ativo');
+            }
+        })
+    }
+
+
+
+    function addAccordion(e){
+        $corpoaccord.append('<div class="accordion"><div class="titulo">' + e.titulo + '</div><div class="content">' + e.conteudo + '</div></div>');
+        $accordion = $('.accordion');
+        $titulo = $('.titulo');
+        $content = $('.content');
+        $content.hide();
+        
+    }
+    
+    let $tituloform = $('#titulo-form');
+    let $conteudo = $('#conteudo');
+    let $enviar = $('#enviar');
+
+    function getAccordion(){
+        $.ajax({
+            type: 'GET',
+            url: 'http://rest.learncode.academy/api/daniel/estudo3',
+            success: function(data){
+                $tituloform.empty();
+                $.each(data, function(i, accord){
+                    addAccordion(accord);
+                })
+                clicarTitulo();
+            }
+        })
+    }
+
+    getAccordion()
+
+    $enviar.on('click', function(){
+        event.preventDefault();
+        console.log('esta entrando');
+
+        $.ajax({
+            type: 'POST',
+            url: 'http://rest.learncode.academy/api/daniel/estudo3',
+            data: {titulo: $tituloform.val(), conteudo: $conteudo.val()},
+            success: function(data){
+                addAccordion(data);
+                clicarTitulo();
+            }
+        })
+    })
+
+    </script>
+</body>
+</html>

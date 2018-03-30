@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <title>Document</title>
+</head>
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+    }
+
+    .accordion-body{
+        width: 900px;
+        margin: auto;
+    }
+
+    .accordion{
+        width: 750px;
+        margin: auto;
+    }
+
+    .title{
+        background-color: rgb(68, 78, 87);
+        color: white;
+        font-size: 25pt;
+        height: 70px;
+        cursor: pointer;
+        user-select: none;
+        padding: 5px;
+    }
+
+    .title.ativo{
+        background-color: rgb(72, 101, 126);
+    }
+
+    .content{
+        background-color: rgb(147, 169, 189);
+        color: black;
+        font-size: 15pt;
+        height: 150px;
+        padding: 5px;
+    }
+</style>
+<body>
+    <div class="accordion-body">
+        <div class="accordion">
+            <div class="title">
+                <h2> kbjabjab </h2>
+            </div>
+            <div class="content">
+                <p>hdhdhjidhj dihehfh fiifhfn iojfrhif</p>
+            </div>
+        </div>
+        <div class="accordion">
+            <div class="title">
+                <h2> erggeh </h2>
+            </div>
+            <div class="content">
+                <p>ahHAHA JAJAJj jshsjsjm akama</p>
+            </div>
+        </div>
+        <div class="accordion">
+            <div class="title">
+                <h2> jajuajua </h2>
+            </div>
+            <div class="content">
+                <p>iususn akakak ççap kshnbm js</p>
+            </div>
+        </div>
+        <div class="accordion">
+            <div class="title">
+                <h2> normijd </h2>
+            </div>
+            <div class="content">
+                <p>alif huag ji9sua opoiy just fong</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $accordion = $('.accordion');
+        $title = $('.title');
+        $content = $('.content');
+
+        $content.hide();
+        $title.on('click', function(){
+            if($(this).hasClass('ativo')){
+                $(this).siblings($content).slideUp(200);
+                $(this).removeClass('ativo');
+            }
+            else{
+                $(this).addClass('ativo');
+                $(this).siblings($content).slideDown(200);
+            }
+        })
+    </script>
+</body>
+</html>

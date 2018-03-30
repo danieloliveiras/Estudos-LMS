@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <title>Document</title>
+</head>
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+    }
+
+    .btn{
+        margin: 50px;
+        padding: 5px;
+        font-family: sans-serif;
+        color: white;
+        background-color: rgb(82, 82, 82);
+        border: none;
+        border-radius: 20px;
+        padding: 20px;
+    }
+
+    .modal-back{
+        background-color: rgba(0, 0, 0, .7);
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+    }
+
+    .modal{
+        height: 400px;
+        width: 700px;
+        margin: auto;
+        border-radius: 20px;
+        background-color: rgb(151, 151, 151);
+        font-family: sans-serif;
+        padding: 40px;
+    }
+
+    .lista{
+        margin-left: 50px;
+    }
+</style>
+<body>
+    <div class="corpo-da-pagina">
+        <button class="btn">Aperte!</button>
+        <div class="modal-back">
+            <div class="modal">
+                <form action="">
+                    Nome: <input type="text" name="name" id="name"> <br>
+                    Sobrenome: <input type="text" name="surname" id="surname"> <br>
+                    <input type="submit" value="enviar" id="submit">
+                    <button class="fechar">fechar</button>
+                </form>
+            </div>
+        </div>
+        <div class="print">
+            <ul class="lista">
+
+            </ul>
+        </div>
+    </div>
+
+    <script>
+    let $modalback = $('.modal-back');
+    let $btn = $('.btn');
+    let $fechar = $('.fechar');
+
+    $modalback.hide();
+
+    $btn.on('click', function(){
+        $modalback.show();
+    })
+
+    $fechar.on('click', function(){
+        $modalback.hide();
+    })
+
+    let $name = $('#name');
+    let $surname = $('#surname');
+    let $enviar = $('#submit');
+    let $lista = $('.lista');
+
+    function addNomes(nom){
+        $lista.append('<li>' + nom.nome + ' ' + nom.sobrenome + '</li>')
+    }
+
+    function getNomes(){
+        $.ajax({
+            type: 'GET',
+            url: 'http://rest.learncode.academy/api/daniel/estudo1',
+            success: function(data){
+                $lista.empty();
+                $.each(data, function(i, nomes){
+                    addNomes(nomes);
+                })
+            }
+        })
+    }
+
+    getNomes();
+
+    $enviar.on('click', function(){
+        event.preventDefault();
+        console.log("entra aqui.")
+
+        $.ajax({
+            type: 'POST',
+            url: 'http://rest.learncode.academy/api/daniel/estudo1',
+            data: {nome: $name.val(), sobrenome: $surname.val()},
+            success: function(data){
+                addNomes(data);
+                console.log("entrou aqui!");
+            }
+        })
+    })
+    </script>
+</body>
+</html>

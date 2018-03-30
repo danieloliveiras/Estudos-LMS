@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+    <title>Document</title>
+</head>
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+    }
+
+    .slider-corpo{
+        width: 800px;
+        height: 450px;
+        background-color: skyblue;
+        margin: auto;
+        position: relative;
+    }
+
+    .slider{
+        color: whitesmoke;
+        font-family: sans-serif;
+        padding-top: 50px;
+        text-align: center;
+        user-select: none;
+        display: none;
+    }
+
+    .slider h2{
+        font-size: 25pt;
+    }
+
+    .slider p{
+        font-size: 12pt;
+    }
+
+    .slider.ativo{
+        display: block;
+    }
+
+    .ceta{
+        background-color: rgba(0, 0, 0, .7);
+        color: white;
+        font-size: 15pt;
+        padding: 20px;
+        border-radius: 7px;
+        top: 40%;
+        cursor: pointer;
+        user-select: none;
+        position: absolute;
+    }
+
+    .direita{
+        right: 0px;
+    }
+</style>
+<body>
+    <div class="slider-todo">
+        <div class="slider-corpo">
+            <div class="lista-de-sliders">
+                <!-- <div class="slider ativo">
+                    <h2>please work</h2>
+                    <p> sub sub sub sub sub sub</p>
+                </div>
+                <div class="slider">
+                    <h2>it has to work</h2>
+                </div>
+                <div class="slider">
+                    <h2>oh god please work</h2>
+                </div>
+                <div class="slider">
+                    <h2>i need this to work</h2>
+                </div> -->
+            </div>
+            <div class="esquerda ceta"> < </div>
+            <div class="direita ceta">></div>
+        </div>
+
+        <form class="formulario">
+            Titulo: <input type="text" name="titulo" id="titulo"> <br>
+            Subtitulo: <input type="text" name="subtitulo" id="subtitulo"> <br>
+            <input type="submit" value="enviar" id="enviar">
+        </form>
+    </div>
+
+    <script>
+    let $slidercorpo = $('.slider-corpo');
+    let $slider = $('.slider');
+    let $esquerda = $('.esquerda');
+    let $direita = $('.direita');
+    let atual = 0;
+
+    $direita.on('click', function(){
+        console.log($slider);
+        $slider[atual].classList.remove('ativo');
+        atual++
+        if(atual > $slider.length - 1){
+            atual = 0;
+        }
+        $slider[atual].classList.add('ativo');
+    })
+
+
+    $esquerda.on('click', function(){
+        $slider[atual].classList.remove('ativo');
+        atual--
+        if(atual < 0){
+            atual = $slider.length - 1;
+        }
+        $slider[atual].classList.add('ativo');
+    })
+
+    let $titulo = $('#titulo');
+    let $subtitulo = $('#subtitulo');
+    let $enviar = $('#enviar');
+    let $listasliders = $('.lista-de-sliders');
+
+    function addSlide(exem){
+        $listasliders.append('<div class="slider"><h2>' + exem.titulo + '</h2><p>' + exem.subtitulo + '</p></div>');
+        $slider = $('.slider');
+    }
+
+    function getSlide(){
+        $.ajax({
+            type: 'GET',
+            url: 'http://rest.learncode.academy/api/daniel/estudo2',
+            success: function(data){
+                $listasliders.empty();
+                $.each(data, function(i, slides){
+                    addSlide(slides)
+                })
+                $slider[0].classList.add('ativo');
+            }
+        })
+    }
+
+    getSlide();
+
+    $enviar.on('click', function(){
+        event.preventDefault();
+
+        $.ajax({
+            type: 'POST',
+            url: 'http://rest.learncode.academy/api/daniel/estudo2',
+            data: {titulo: $titulo.val(), subtitulo: $subtitulo.val()},
+            success: function(data){
+                addSlide(data);
+            }
+        })
+    })
+    </script>
+</body>
+</html>

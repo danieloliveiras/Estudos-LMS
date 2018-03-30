@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+</head>
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+    }
+
+    .slider-body{
+        margin: auto;
+        width: 70%;
+        height: 25vh;
+        background-color: #bd99ff;
+        position: relative;
+    }
+
+    .slide{
+        padding: 80px;
+        text-align: center;
+        display: none;
+        user-select: none;
+    }
+
+    .slide.ativo{
+        display: block;
+    }
+
+    .arrow{
+        font-size: 40pt;
+        background-color: rgba(101, 92, 105, 0.9);
+        width: 40px;
+        height: 50px;
+        cursor: pointer;
+        user-select: none;
+        padding: 5px 18px;
+        border-radius: 8px;
+        position: absolute;
+        top: 25%;
+    }
+
+    .arrow.next{
+        right: 0px;
+    }
+
+
+</style>
+<body>
+    <div class="slider-body">
+        <div class="slides">
+            <div class="slide ativo">AAaAaAAAaAaAaAaAaA</div>
+            <div class="slide">BbBbBbbBbBbBbBBbBb</div>
+            <div class="slide">CCcCcCcCccCcCcCcCc</div>
+            <div class="slide">DdDdDdDdDdDdDdDdDd</div>
+        </div>
+        <div class="prev arrow"><</div>
+        <div class="next arrow">></div>
+    </div>
+
+    <script>
+        let $next = $('.next');
+        let $prev = $('.prev');
+        let $slide = $('.slide');
+        let ativo = $('.ativo');
+        let atual = 0;
+
+        $next.on('click', function(){
+            $slide[atual].classList.remove('ativo');
+            atual ++
+            if(atual > $slide.length - 1){
+                atual = 0;
+            }
+            $slide[atual].classList.add('ativo');
+        });
+
+        $prev.on('click', function(){
+            $slide[atual].classList.remove('ativo');
+            atual --
+            if(atual < 0){
+                atual = $slide.length - 1;
+            }
+            $slide[atual].classList.add('ativo');
+        })
+    </script>
+</body>
+</html>
